@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,9 +16,20 @@ import javax.persistence.Id;
 public class Exercise {
 
     @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "exercise_id")
     private Long exerciseId;
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "description")
+    @Lob
+    private String description;
+
+    @Column(name = "rating")
+    private Double rating;
+
+
 }
