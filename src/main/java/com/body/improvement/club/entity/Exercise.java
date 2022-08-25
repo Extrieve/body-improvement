@@ -1,18 +1,18 @@
 package com.body.improvement.club.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Getter
 @Setter
+@Builder
+@ToString
 public class Exercise {
 
     @Id
@@ -31,5 +31,12 @@ public class Exercise {
     @Column(name = "rating")
     private Double rating;
 
+    @Column(name = "created_at")
+    private ZonedDateTime zonedDateTime;
+
+    @Override
+    public int hashCode(){
+        return getClass().hashCode();
+    }
 
 }
