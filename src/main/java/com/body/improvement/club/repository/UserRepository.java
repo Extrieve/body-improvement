@@ -8,11 +8,9 @@ import java.util.Collection;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-    User findUserByUserId(String userId);
-
     User findUserByUsername(String username);
 
-    User findUserByFirstNameAndLastName(String firstName, String lastName);
+    Collection<User> findUserByFirstNameAndLastName(String firstName, String lastName);
 
     Collection<User> findUserByFirstNameContaining(String firstName);
 
