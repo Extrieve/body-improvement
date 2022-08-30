@@ -35,4 +35,9 @@ public class UserService implements ServiceDelegator{
         Collection<User> payload = userRepository.findAll();
         return ResponseEntity.ok(payload);
     }
+
+    public ResponseEntity<Collection<User>> getUserByUsernameContaining(String username){
+        Collection<User> payload = userRepository.findUserByUsernameContaining(username);
+        return ResponseEntity.ok().body(payload);
+    }
 }
