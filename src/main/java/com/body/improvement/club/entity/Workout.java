@@ -15,13 +15,13 @@ import java.util.Collection;
 @Setter
 @Builder
 @ToString
-public class Exercise {
+public class Workout {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "exercise_id")
-    private Long exerciseId;
+    @Column(name = "workout_id")
+    private Long workoutId;
 
     @Column(name = "name")
     private String name;
@@ -36,13 +36,15 @@ public class Exercise {
     @Column(name = "created_at")
     private ZonedDateTime zonedDateTime;
 
-    // Many to many relationship with Workout
-    @ManyToMany(mappedBy = "exercises")
-    private Collection<Workout> workouts = new ArrayList<>();
+    // Many to many relationship with Exercise
+    @ManyToMany(mappedBy = "workouts", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "workout_exercise",
+            joinColumns = @JoinColumn(name = "workout_id"),
+            inverseJoinColumns = @JoinColumn(name = "exercise_id"))
+    private Collection<Exercise> exercises = new ArrayList<>();
 
     @Override
     public int hashCode(){
         return getClass().hashCode();
     }
-
 }
