@@ -37,6 +37,7 @@ public class Workout {
     private ZonedDateTime zonedDateTime;
 
     // Many to many relationship with Exercise
+    @ToString.Exclude
     @ManyToMany(mappedBy = "workouts", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "workout_exercise",
             joinColumns = @JoinColumn(name = "workout_id"),

@@ -37,6 +37,7 @@ public class Exercise {
     private ZonedDateTime zonedDateTime;
 
     // Many to many relationship with Workout
+    @ToString.Exclude
     @ManyToMany(mappedBy = "exercises")
     private Collection<Workout> workouts = new ArrayList<>();
 
