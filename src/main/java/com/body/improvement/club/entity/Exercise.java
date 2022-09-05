@@ -15,13 +15,14 @@ import java.util.Collection;
 @Setter
 @Builder
 @ToString
+@Table(name = "exercises")
 public class Exercise {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "exercise_id")
-    private Long exerciseId;
+    private String exerciseId;
 
     @Column(name = "name")
     private String name;
@@ -38,7 +39,7 @@ public class Exercise {
 
     // Many to many relationship with Workout
     @ToString.Exclude
-    @ManyToMany(mappedBy = "exercises")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Workout> workouts = new ArrayList<>();
 
     @Override
