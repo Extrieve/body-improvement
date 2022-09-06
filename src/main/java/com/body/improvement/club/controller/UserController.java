@@ -16,6 +16,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping(path = "")
+    public String home() {
+        return "THIS IS WORKING";
+    }
+
     @GetMapping(path = "all", produces = "application/json")
     public ResponseEntity<Collection<User>> fetchAllUsers(){
         return userService.getAllUsers();
