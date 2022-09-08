@@ -18,12 +18,7 @@ import java.util.Collection;
 public class User {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column
-    private String userId;
-
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username")
     private String username;
 
     @Column(name = "password", nullable = false)
@@ -49,4 +44,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Workout> workouts = new ArrayList<>();
 
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Collection<Exercise> exercises = new ArrayList<>();
 }

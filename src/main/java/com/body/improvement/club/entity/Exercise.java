@@ -37,10 +37,16 @@ public class Exercise {
     @Column(name = "created_at")
     private ZonedDateTime zonedDateTime;
 
-    // Many to many relationship with Workout
+    // Many-to-many relationship with Workout
     @ToString.Exclude
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "exercises")
     private Collection<Workout> workouts = new ArrayList<>();
+
+    // Many-to-one relationship with User
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "username")
+    private User user;
 
     @Override
     public int hashCode(){

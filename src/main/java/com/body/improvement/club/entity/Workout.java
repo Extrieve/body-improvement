@@ -40,11 +40,15 @@ public class Workout {
     // Many to many relationship with Exercise
     @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "workout_exercise",
+            joinColumns = @JoinColumn(name = "workout_id"),
+            inverseJoinColumns = @JoinColumn(name = "exercise_id"))
     private Collection<Exercise> exercises = new ArrayList<>();
 
     // Many to one relationship with User
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "username")
     private User user;
 
     @Override
