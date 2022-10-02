@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 
 @Entity
-@Getter@Setter@NoArgsConstructor@AllArgsConstructor
+@Getter@Setter@NoArgsConstructor
 public class Attachment {
 
     @Id
@@ -26,4 +26,10 @@ public class Attachment {
 
     @Lob // Stores large objects as binary large objects (BLOBs)
     private byte[] data;
+
+    public Attachment(String fileName, String fileType, byte[] data) {
+        this.fileName = fileName;
+        this.fileType = fileType;
+        this.data = data;
+    }
 }

@@ -78,4 +78,16 @@ public class UserService implements ServiceDelegator{
 
         return ResponseEntity.ok().body(payload);
     }
+
+    public ResponseEntity<User> saveUser(User user){
+        logger.info("Saving user: " + user.getUsername());
+        User payload = userRepository.save(user);
+
+        if(payload == null){
+            logger.error("Error saving user: " + user.getUsername());
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().body(payload);
+    }
 }

@@ -1,12 +1,11 @@
 package com.body.improvement.club.controller;
 
 import com.body.improvement.club.entity.User;
+import com.body.improvement.club.service.AttachmentService;
 import com.body.improvement.club.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -15,6 +14,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AttachmentService attachmentService;
 
     @GetMapping(path = "")
     public String home() {
@@ -31,4 +33,10 @@ public class UserController {
     public ResponseEntity<User> fetchUserByUsername(@PathVariable String username){
         return userService.getUserByUsername(username);
     }
+
+    @PostMapping(path = "user/save", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<User> saveUser(@RequestBody User user){
+        return userService.saveUser(user);
+    }
+
 }
