@@ -4,6 +4,9 @@ import com.body.improvement.club.entity.Attachment;
 import com.body.improvement.club.model.ResponseData;
 import com.body.improvement.club.service.AttachmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,7 +39,12 @@ public class AttachmentController {
 
 
     @GetMapping("/download/{id}")
-    public ResponseEntity<Attachment> downloadFile(@PathVariable String id){
-        return attachmentService.getAttachmentById(id);
+    public ResponseEntity<Resource> downloadFile(@PathVariable String id){
+        Attachment attachment = null;
+        attachment = attachmentService.getAttachmentById(id).getBody();
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(Objects.requireNonNull(attachment).getFileType()))
+                .header("Content-Disposition", "attachment; filename=\"" + attachment.getFileName() + "\"")
+                .body(new ByteArrayResource(attachment.getData()));
     }
 }
