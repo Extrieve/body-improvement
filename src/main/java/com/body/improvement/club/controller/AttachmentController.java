@@ -20,7 +20,6 @@ public class AttachmentController {
     @Autowired
     private AttachmentService attachmentService;
 
-
     @PostMapping("/upload")
     public ResponseData uploadFile(@RequestParam("file")MultipartFile file) throws Exception {
         Attachment attachment = null;

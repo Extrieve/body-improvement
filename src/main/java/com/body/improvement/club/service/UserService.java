@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
@@ -79,15 +80,21 @@ public class UserService implements ServiceDelegator{
         return ResponseEntity.ok().body(payload);
     }
 
+    @Transactional
     public ResponseEntity<User> saveUser(User user){
         logger.info("Saving user: " + user.getUsername());
-        User payload = userRepository.save(user);
 
-        if(payload == null){
+        try {
+
+            User payload = userRepository.save(user);
+            return ResponseEntity.ok().body(payload);
+
+        } catch (Exception e) {
+
             logger.error("Error saving user: " + user.getUsername());
             return ResponseEntity.badRequest().build();
+
         }
 
-        return ResponseEntity.ok().body(payload);
     }
 }
