@@ -18,23 +18,23 @@ public class UserController {
     @Autowired
     private AttachmentService attachmentService;
 
-    @GetMapping(path = "")
+    @GetMapping(path = "/home")
     public String home() {
         return "THIS IS WORKING";
     }
 
-    @GetMapping(path = "all", produces = "application/json")
+    @GetMapping(path = "/user/all", produces = "application/json")
     public ResponseEntity<Collection<User>> fetchAllUsers(){
         return userService.getAllUsers();
     }
 
 
-    @GetMapping(path = "user/{username}")
+    @GetMapping(path = "/user/find/{username}")
     public ResponseEntity<User> fetchUserByUsername(@PathVariable String username){
         return userService.getUserByUsername(username);
     }
 
-    @PostMapping(path = "user/save", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/user/save", consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> saveUser(@RequestBody User user){
         return userService.saveUser(user);
     }

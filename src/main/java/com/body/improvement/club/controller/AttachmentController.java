@@ -14,13 +14,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Objects;
 
-@RestController("/attachment")
+@RestController
 public class AttachmentController {
 
     @Autowired
     private AttachmentService attachmentService;
 
-    @PostMapping("/upload")
+    @PostMapping("file/upload")
     public ResponseData uploadFile(@RequestParam("file")MultipartFile file) throws Exception {
         Attachment attachment = null;
         String downloadURl = "";
@@ -37,7 +37,7 @@ public class AttachmentController {
     }
 
 
-    @GetMapping("/download/{id}")
+    @GetMapping("file/download/{id}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String id){
         Attachment attachment = null;
         attachment = attachmentService.getAttachmentById(id).getBody();
