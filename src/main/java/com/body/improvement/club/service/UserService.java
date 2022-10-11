@@ -92,6 +92,9 @@ public class UserService implements ServiceDelegator{
             // Establish relationship between user and workout
             payload.getWorkouts().forEach(workout -> workout.setUser(payload));
 
+            // Establishing relationship between the user and the workout.
+            payload.getExercises().forEach(exercise -> exercise.setUser(payload));
+
             return ResponseEntity.ok().body(payload);
 
         } catch (Exception e) {
@@ -130,6 +133,13 @@ public class UserService implements ServiceDelegator{
         }
         if (updatedUser.getBodyWeight() != null) {
             existingUser.setBodyWeight(updatedUser.getBodyWeight());
+        }
+        if (updatedUser.getWorkouts().size() != 0){
+            Collection<Workout> userWorkouts = existingUser.getWorkouts();
+            updatedUser.getWorkouts().forEach(workout -> workout.setUser(existingUser));
+            userWorkouts.addAll(updatedUser.getWorkouts());
+
+            existingUser.setWorkouts(userWorkouts);
         }
 
         return ResponseEntity.ok().body(userRepository.save(existingUser));
