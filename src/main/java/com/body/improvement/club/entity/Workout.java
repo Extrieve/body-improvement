@@ -37,7 +37,7 @@ public class Workout {
     @Column(name = "created_at")
     private ZonedDateTime zonedDateTime;
 
-    // Many to many relationship with Exercise
+    // Many-to-many relationship with Exercise
     @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "workout_exercise",
@@ -45,7 +45,7 @@ public class Workout {
             inverseJoinColumns = @JoinColumn(name = "exercise_id"))
     private Collection<Exercise> exercises = new ArrayList<>();
 
-    // Many to one relationship with User
+    // Many-to-one relationship with User
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "username")

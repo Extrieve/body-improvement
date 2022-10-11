@@ -97,4 +97,37 @@ public class UserService implements ServiceDelegator{
         }
 
     }
+
+    @Transactional
+    public ResponseEntity<User> updateUser(User updatedUser){
+        logger.info("Updating user: " + updatedUser.getUsername());
+        User existingUser = userRepository.findUserByUsername(updatedUser.getUsername());
+
+        if(existingUser == null){
+            logger.error("User not found, creating new user");
+            return ResponseEntity.ok().body(userRepository.save(updatedUser));
+        }
+
+        if (updatedUser.getFirstName() != null) {
+            existingUser.setFirstName(updatedUser.getFirstName());
+        }
+        if (updatedUser.getLastName() != null) {
+            existingUser.setLastName(updatedUser.getLastName());
+        }
+        if (updatedUser.getEmail() != null) {
+            existingUser.setEmail(updatedUser.getEmail());
+        }
+        if (updatedUser.getPassword() != null) {
+            existingUser.setPassword(updatedUser.getPassword());
+        }
+        if (updatedUser.getHeight() != null) {
+            existingUser.setHeight(updatedUser.getHeight());
+        }
+        if (updatedUser.getBodyWeight() != null) {
+            existingUser.setBodyWeight(updatedUser.getBodyWeight());
+        }
+
+        return ResponseEntity.ok().body(userRepository.save(existingUser));
+
+    }
 }
