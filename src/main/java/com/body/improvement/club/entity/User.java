@@ -39,8 +39,7 @@ public class User {
     @Column(name = "height")
     private String height;
 
-    @Column(name = "about_me")
-    @Lob
+    @Column(name = "about_me", length = 1000)
     private String aboutMe;
 
     @ToString.Exclude

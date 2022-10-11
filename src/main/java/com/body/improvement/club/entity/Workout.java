@@ -1,5 +1,6 @@
 package com.body.improvement.club.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -47,6 +48,7 @@ public class Workout {
 
     // Many-to-one relationship with User
     @ToString.Exclude
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "username")
     private User user;

@@ -1,6 +1,7 @@
 package com.body.improvement.club.service;
 
 import com.body.improvement.club.entity.User;
+import com.body.improvement.club.entity.Workout;
 import com.body.improvement.club.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -87,6 +88,10 @@ public class UserService implements ServiceDelegator{
         try {
 
             User payload = userRepository.save(user);
+
+            // Establish relationship between user and workout
+            payload.getWorkouts().forEach(workout -> workout.setUser(payload));
+
             return ResponseEntity.ok().body(payload);
 
         } catch (Exception e) {
