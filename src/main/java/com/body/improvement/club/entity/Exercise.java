@@ -1,5 +1,6 @@
 package com.body.improvement.club.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -46,6 +47,7 @@ public class Exercise {
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "username")
+    @JsonIgnore
     private User user;
 
     @Override
