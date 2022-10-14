@@ -21,7 +21,7 @@ public class WorkoutService {
     private final Logger logger = LogManager.getLogger(WorkoutService.class);
 
     // TODO: Implement the rest of the service class.
-    public ResponseEntity<Collection<Workout>> fetchAllWorkouts(){
+    public ResponseEntity<Collection<Workout>> getAllWorkouts(){
 
         logger.info("Fetching all workout plans.");
 
@@ -34,7 +34,7 @@ public class WorkoutService {
     }
 
 
-    public ResponseEntity<Workout> fetchWorkoutById(String workoutId){
+    public ResponseEntity<Workout> getWorkoutById(String workoutId){
 
         logger.info("Fetching workout with workout id: " + workoutId);
         try {
@@ -42,6 +42,19 @@ public class WorkoutService {
         }
         catch (RuntimeException e) {
             logger.warn("No workout with id: " + workoutId);
+            return ResponseEntity.badRequest().body(NULL_WORKOUT);
+        }
+    }
+
+    public ResponseEntity<Workout> getWorkoutByName(String workoutName){
+
+        logger.info("Fetching workout with workout name: " + workoutName);
+        try {
+            Workout payload = workoutRepository.findByName(workoutName).stream().findFirst().get();
+            return ResponseEntity.ok().body(payload);
+        }
+        catch (RuntimeException e) {
+            logger.warn("No workout with name: " + workoutName);
             return ResponseEntity.badRequest().body(NULL_WORKOUT);
         }
     }

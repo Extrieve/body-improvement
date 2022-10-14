@@ -40,6 +40,7 @@ public class Exercise {
 
     // Many-to-many relationship with Workout
     @ToString.Exclude
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "exercises")
     private Collection<Workout> workouts = new ArrayList<>();
 
