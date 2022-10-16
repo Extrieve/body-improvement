@@ -145,4 +145,21 @@ public class UserService implements ServiceDelegator{
         return ResponseEntity.ok().body(userRepository.save(existingUser));
 
     }
+
+    @Transactional
+    public ResponseEntity<Workout> saveWorkout(Workout newWorkout, String username){
+        logger.info("Saving workout: " + newWorkout.getName() + " for user: " + username);
+        User user = userRepository.findUserByUsername(username);
+
+        if(user == null){
+            logger.error("User not found");
+            return ResponseEntity.badRequest().build();
+        }
+
+        newWorkout.setUser(user);
+        user.getWorkouts().add(newWorkout);
+
+        return ResponseEntity.ok().body(newWorkout);
+    }
+
 }
