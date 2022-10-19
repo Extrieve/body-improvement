@@ -1,5 +1,6 @@
 package com.body.improvement.club.controller;
 
+import com.body.improvement.club.entity.Exercise;
 import com.body.improvement.club.entity.User;
 import com.body.improvement.club.service.AttachmentService;
 import com.body.improvement.club.service.UserService;
@@ -37,6 +38,11 @@ public class UserController {
     @PostMapping(path = "/user/save", consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> saveUser(@RequestBody User user){
         return userService.saveUser(user);
+    }
+
+    @PostMapping(path = "/exercise/save/{username}", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Exercise> saveExercise(@RequestBody Exercise exercise, @PathVariable String username){
+        return userService.saveExercise(exercise, username);
     }
 
 }

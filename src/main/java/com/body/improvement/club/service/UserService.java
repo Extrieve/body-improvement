@@ -1,5 +1,6 @@
 package com.body.improvement.club.service;
 
+import com.body.improvement.club.entity.Exercise;
 import com.body.improvement.club.entity.User;
 import com.body.improvement.club.entity.Workout;
 import com.body.improvement.club.repository.UserRepository;
@@ -160,6 +161,23 @@ public class UserService implements ServiceDelegator{
         user.getWorkouts().add(newWorkout);
 
         return ResponseEntity.ok().body(newWorkout);
+    }
+
+
+    @Transactional
+    public ResponseEntity<Exercise> saveExercise(Exercise newExercise, String username){
+        logger.info("Saving exercise: " + newExercise.getName() + " for user: " + username);
+        User user = userRepository.findUserByUsername(username);
+
+        if(user == null){
+            logger.error("User not found");
+            return ResponseEntity.badRequest().build();
+        }
+
+        newExercise.setUser(user);
+        user.getExercises().add(newExercise);
+
+        return ResponseEntity.ok().body(newExercise);
     }
 
 }
