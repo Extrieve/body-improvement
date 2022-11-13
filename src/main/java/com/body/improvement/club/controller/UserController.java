@@ -45,4 +45,14 @@ public class UserController {
         return userService.saveExercise(exercise, username);
     }
 
+    @PutMapping(path = "/user/update/", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<User> updateUser(@RequestBody User user){
+        return userService.updateUser(user);
+    }
+
+    @DeleteMapping(path = "/user/delete/{username}")
+    public ResponseEntity<Object> deleteUser(@PathVariable String username){
+        return userService.deleteUser(username);
+    }
+
 }

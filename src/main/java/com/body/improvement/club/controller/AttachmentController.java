@@ -20,6 +20,16 @@ public class AttachmentController {
     @Autowired
     private AttachmentService attachmentService;
 
+    @GetMapping("file/download/{id}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String id){
+        Attachment attachment = null;
+        attachment = attachmentService.getAttachmentById(id).getBody();
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(Objects.requireNonNull(attachment).getFileType()))
+                .header("Content-Disposition", "attachment; filename=\"" + attachment.getFileName() + "\"")
+                .body(new ByteArrayResource(attachment.getData()));
+    }
+
     @PostMapping("file/upload")
     public ResponseData uploadFile(@RequestParam("file")MultipartFile file) throws Exception {
         Attachment attachment = null;
@@ -37,13 +47,4 @@ public class AttachmentController {
     }
 
 
-    @GetMapping("file/download/{id}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String id){
-        Attachment attachment = null;
-        attachment = attachmentService.getAttachmentById(id).getBody();
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(Objects.requireNonNull(attachment).getFileType()))
-                .header("Content-Disposition", "attachment; filename=\"" + attachment.getFileName() + "\"")
-                .body(new ByteArrayResource(attachment.getData()));
-    }
 }

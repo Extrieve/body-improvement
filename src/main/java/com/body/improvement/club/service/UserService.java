@@ -180,4 +180,17 @@ public class UserService implements ServiceDelegator{
         return ResponseEntity.ok().body(newExercise);
     }
 
+    @Transactional
+    public ResponseEntity<Object> deleteUser(String username){
+        logger.info("Deleting user: " + username);
+        User user = userRepository.findUserByUsername(username);
+
+        if(user == null){
+            logger.error("User not found");
+            return ResponseEntity.badRequest().build();
+        }
+        userRepository.delete(user);
+        return ResponseEntity.ok().build();
+    }
+
 }
