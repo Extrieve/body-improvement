@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -33,6 +34,16 @@ public class UserController {
     @GetMapping(path = "/user/find/{username}")
     public ResponseEntity<User> fetchUserByUsername(@PathVariable String username){
         return userService.getUserByUsername(username);
+    }
+
+    @GetMapping(path = "/user/find/name", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Collection<User>> fetchUsersByFirstNameAndLastName(
+            @RequestBody Map<String, String> userInfo){
+
+        String firstName = userInfo.get("firstName");
+        String lastName = userInfo.get("lastName");
+
+        return userService.getUsersByFirstNameAndLastName(firstName, lastName);
     }
 
     @PostMapping(path = "/user/save", consumes = "application/json", produces = "application/json")
