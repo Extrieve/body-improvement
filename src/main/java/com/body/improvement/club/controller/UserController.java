@@ -36,6 +36,11 @@ public class UserController {
         return userService.getUserByUsername(username);
     }
 
+    @GetMapping(path = "/user/find/like/{username}")
+    public ResponseEntity<Collection<User>> fetchUsersByUsernameLike(@PathVariable String username){
+        return userService.getUserByUsernameContaining(username);
+    }
+
     @GetMapping(path = "/user/find/name", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Collection<User>> fetchUsersByFirstNameAndLastName(
             @RequestBody Map<String, String> userInfo){
