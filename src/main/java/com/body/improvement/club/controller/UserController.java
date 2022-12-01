@@ -51,6 +51,13 @@ public class UserController {
         return userService.getUsersByFirstNameAndLastName(firstName, lastName);
     }
 
+    @GetMapping(path = "/user/find/name/{firstName}", produces = "application/json")
+    public ResponseEntity<Collection<User>> fetchUsersByFirstNameLike(
+            @PathVariable String firstName
+    ){
+        return userService.getUsersByFirstNameContaining(firstName);
+    }
+
     @PostMapping(path = "/user/save", consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> saveUser(@RequestBody User user){
         return userService.saveUser(user);
