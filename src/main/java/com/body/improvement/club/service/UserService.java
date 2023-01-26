@@ -28,8 +28,8 @@ public class UserService implements ServiceDelegator{
             User user = userRepository.findUserByUsername(username);
             return ResponseEntity.ok(user);
         } catch (Exception e) {
-            logger.error("Error fetching user by username: " + username);
-            return ResponseEntity.badRequest().build();
+            logger.error("No user with username: " + username);
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -52,8 +52,8 @@ public class UserService implements ServiceDelegator{
             Collection<User> users = userRepository.findUserByFirstNameContaining(firstName);
             return ResponseEntity.ok(users);
         } catch (Exception e) {
-            logger.error("Error fetching users by first name: " + firstName);
-            return ResponseEntity.badRequest().build();
+            logger.error("No users with first name: " + firstName);
+            return ResponseEntity.notFound().build();
         }
 
     }
@@ -96,7 +96,7 @@ public class UserService implements ServiceDelegator{
             // Establishing relationship between the user and the workout.
             payload.getExercises().forEach(exercise -> exercise.setUser(payload));
 
-            return ResponseEntity.ok().body(payload);
+            return ResponseEntity.status(201).body(payload);
 
         } catch (Exception e) {
 
@@ -114,7 +114,7 @@ public class UserService implements ServiceDelegator{
 
         if(existingUser == null){
             logger.error("User not found, creating new user");
-            return ResponseEntity.ok().body(userRepository.save(updatedUser));
+            return saveUser(updatedUser);
         }
 
         if (updatedUser.getFirstName() != null) {
@@ -154,7 +154,7 @@ public class UserService implements ServiceDelegator{
 
         if(user == null){
             logger.error("User not found");
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.noContent().build();
         }
 
         newWorkout.setUser(user);
