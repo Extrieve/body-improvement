@@ -26,9 +26,13 @@ public class UserService implements ServiceDelegator{
 
         try{
             User user = userRepository.findUserByUsername(username);
+            if (user == null){
+                logger.warn("No user with username: " + username);
+                return ResponseEntity.ok().body(new User());
+            }
             return ResponseEntity.ok(user);
         } catch (Exception e) {
-            logger.error("No user with username: " + username);
+            logger.error("An error occurred when trying to find username: " + username);
             return ResponseEntity.notFound().build();
         }
     }
@@ -38,10 +42,18 @@ public class UserService implements ServiceDelegator{
 
         try{
             Collection<User> users = userRepository.findUserByFirstNameAndLastName(firstName, lastName);
+
+            if (users == null){
+                logger.warn("No users with first name: " + firstName + " and last name: " + lastName);
+                return ResponseEntity.ok().body(null);
+            }
+
             return ResponseEntity.ok(users);
         } catch (Exception e) {
+
             logger.error("Error fetching users by first name: " + firstName + " and last name: " + lastName);
             return ResponseEntity.badRequest().build();
+
         }
     }
 
@@ -50,6 +62,12 @@ public class UserService implements ServiceDelegator{
 
         try{
             Collection<User> users = userRepository.findUserByFirstNameContaining(firstName);
+
+            if (users == null){
+                logger.warn("No users with first name: " + firstName);
+                return ResponseEntity.ok().body(null);
+            }
+
             return ResponseEntity.ok(users);
         } catch (Exception e) {
             logger.error("No users with first name: " + firstName);
