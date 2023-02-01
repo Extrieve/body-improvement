@@ -2,7 +2,7 @@
 import requests
 import json
 
-with open('MOCK_DATA.json') as f:
+with open('/home/nick/Documents/GitHub/body-improvement/src/main/java/com/body/improvement/club/utility/MOCK_DATA.json') as f:
     data = json.load(f)
 
 url = 'http://localhost:8080/user/save'

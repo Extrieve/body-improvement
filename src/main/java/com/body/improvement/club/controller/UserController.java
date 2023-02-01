@@ -9,10 +9,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class UserController {
+
+    Logger logger = Logger.getLogger(UserController.class.getName());
+
+    private static final User DEFAULT_USER = new User();
+    private static final List<User> DEFAULT_USER_LIST = null;
 
     @Autowired
     private UserService userService;
@@ -27,7 +34,12 @@ public class UserController {
 
     @GetMapping(path = "/user/all", produces = "application/json")
     public ResponseEntity<Collection<User>> fetchAllUsers(){
-        return userService.getAllUsers();
+        Collection<User> users = userService.getAllUsers().getBody();
+        if (users == null){
+            logger.info("No users found");
+            return ResponseEntity.ok(DEFAULT_USER_LIST);
+        }
+        return ResponseEntity.ok(users);
     }
 
 
