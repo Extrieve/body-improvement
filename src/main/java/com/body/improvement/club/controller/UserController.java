@@ -21,11 +21,11 @@ public class UserController {
     private static final User DEFAULT_USER = new User();
     private static final List<User> DEFAULT_USER_LIST = null;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private AttachmentService attachmentService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping(path = "/home")
     public String home() {

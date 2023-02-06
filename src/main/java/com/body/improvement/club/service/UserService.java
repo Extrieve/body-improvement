@@ -16,10 +16,13 @@ import java.util.Collection;
 @Service
 public class UserService implements ServiceDelegator{
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     private final Logger logger = LogManager.getLogger(UserService.class);
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public ResponseEntity<User> getUserByUsername(String username){
         logger.info("Fetching user by username: " + username);

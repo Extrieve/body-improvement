@@ -14,10 +14,13 @@ import java.io.IOException;
 @Service
 public class AttachmentService implements ServiceDelegator {
 
-    @Autowired
-    private AttachmentRepo attachmentRepo;
+    private final AttachmentRepo attachmentRepo;
 
     private final Logger logger = LogManager.getLogger(AttachmentService.class);
+
+    public AttachmentService(AttachmentRepo attachmentRepo) {
+        this.attachmentRepo = attachmentRepo;
+    }
 
     public ResponseEntity<Attachment> saveAttachment(MultipartFile attachment){
         logger.info("Saving attachment: " + attachment.getOriginalFilename());

@@ -17,8 +17,11 @@ import java.util.Objects;
 @RestController
 public class AttachmentController {
 
-    @Autowired
-    private AttachmentService attachmentService;
+    private final AttachmentService attachmentService;
+
+    public AttachmentController(AttachmentService attachmentService) {
+        this.attachmentService = attachmentService;
+    }
 
     @GetMapping("file/download/{id}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String id){
