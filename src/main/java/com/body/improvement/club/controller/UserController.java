@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
+@CrossOrigin(origins = "http://127.0.0.1:5173/", allowedHeaders = "*")
 public class UserController {
 
     Logger logger = Logger.getLogger(UserController.class.getName());
