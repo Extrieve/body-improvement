@@ -15,10 +15,13 @@ public class WorkoutService {
 
 
     private static final Workout NULL_WORKOUT = new Workout();
-    @Autowired
-    private WorkoutRepository workoutRepository;
+    private final WorkoutRepository workoutRepository;
 
     private final Logger logger = LogManager.getLogger(WorkoutService.class);
+
+    public WorkoutService(WorkoutRepository workoutRepository) {
+        this.workoutRepository = workoutRepository;
+    }
 
     // TODO: Implement the rest of the service class.
     public ResponseEntity<Collection<Workout>> getAllWorkouts(){

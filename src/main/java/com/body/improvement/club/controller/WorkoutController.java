@@ -12,11 +12,14 @@ import java.util.Collection;
 @RestController
 public class WorkoutController {
 
-    @Autowired
-    private WorkoutService workoutService;
+    private final WorkoutService workoutService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public WorkoutController(WorkoutService workoutService, UserService userService) {
+        this.workoutService = workoutService;
+        this.userService = userService;
+    }
 
 
     @GetMapping(path = "/workout/all")
