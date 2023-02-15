@@ -6,7 +6,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface PageableUserRepo extends PagingAndSortingRepository<User, String> {
 
-    Pageable findUserByUsername(String username, Pageable pageable);
+//    Pageable findUserByUsername(String username, Pageable pageable);
 
-    Pageable findUserByFirstNameAndLastName(String firstName, String lastName, Pageable pageable);
+//    Pageable findUserByFirstNameAndLastName(String firstName, String lastName, Pageable pageable);
 }
