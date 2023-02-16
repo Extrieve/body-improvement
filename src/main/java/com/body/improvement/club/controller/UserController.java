@@ -36,7 +36,7 @@ public class UserController {
     @GetMapping(path = "/user/all", produces = "application/json")
     public ResponseEntity<Collection<User>> fetchAllUsers(){
         Collection<User> users = userService.getAllUsers().getBody();
-        if (users == null){
+        if (users.isEmpty()){
             logger.info("No users found");
             return ResponseEntity.ok(DEFAULT_USER_LIST);
         }

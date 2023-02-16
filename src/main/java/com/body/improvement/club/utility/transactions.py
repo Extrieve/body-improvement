@@ -1,8 +1,10 @@
 # Transactions to startup the H2 database for testing this is temporary
 import requests
 import json
+import os
 
-with open('/home/nick/Documents/GitHub/body-improvement/src/main/java/com/body/improvement/club/utility/MOCK_DATA.json') as f:
+cwd = os.getcwd().replace('\\', '/')
+with open(f'{cwd}/src/main/java/com/body/improvement/club/utility/MOCK_DATA.json') as f:
     data = json.load(f)
 
 url = 'http://localhost:8080/user/save'
