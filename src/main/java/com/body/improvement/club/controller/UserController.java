@@ -72,7 +72,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/user/save", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<User> saveUser(@RequestBody User user){
+    public ResponseEntity<Object> saveUser(@RequestBody User user){
         return userService.saveUser(user);
     }
 
@@ -82,7 +82,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/user/update/", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<User> updateUser(@RequestBody User user){
+    public ResponseEntity<Object> updateUser(@RequestBody User user){
         return userService.updateUser(user);
     }
 

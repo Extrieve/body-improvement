@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserService implements ServiceDelegator{
@@ -104,18 +106,27 @@ public class UserService implements ServiceDelegator{
     }
 
     @Transactional
-    public ResponseEntity<User> saveUser(User user){
+    public ResponseEntity<Object> saveUser(User user){
         logger.info("Saving user: " + user.getUsername());
-
         try {
+            if (user.getUsername().isEmpty() || user.getUsername().length() < 3) {
+                logger.error("Username must be at least 3 characters");
+                Map<String, String> error = new HashMap<>(
+                        Map.of("error", "Username must be at least 3 characters")
+                );
+                return ResponseEntity.badRequest().body(error);
+            }
 
             User payload = userRepository.save(user);
 
             // Establish relationship between user and workout
+            if(!payload.getWorkouts().isEmpty()){
             payload.getWorkouts().forEach(workout -> workout.setUser(payload));
+            }
 
-            // Establishing relationship between the user and the workout.
-            payload.getExercises().forEach(exercise -> exercise.setUser(payload));
+            if (!payload.getExercises().isEmpty()) {
+                payload.getExercises().forEach(exercise -> exercise.setUser(payload));
+            }
 
             return ResponseEntity.status(201).body(payload);
 
@@ -129,7 +140,7 @@ public class UserService implements ServiceDelegator{
     }
 
     @Transactional
-    public ResponseEntity<User> updateUser(User updatedUser){
+    public ResponseEntity<Object> updateUser(User updatedUser){
         logger.info("Updating user: " + updatedUser.getUsername());
         User existingUser = userRepository.findUserByUsername(updatedUser.getUsername());
 
@@ -198,7 +209,8 @@ public class UserService implements ServiceDelegator{
         newExercise.setUser(user);
         user.getExercises().add(newExercise);
 
-        return ResponseEntity.ok().body(newExercise);
+        // 201 Created
+        return ResponseEntity.status(201).body(newExercise);
     }
 
     @Transactional
