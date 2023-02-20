@@ -23,4 +23,9 @@ public class UserPageableController {
     public ResponseEntity<Page<User>> findAllUsers(@RequestParam int page, @RequestParam int size){
         return userPageableService.getAllUsers(page, size);
     }
+
+    @GetMapping(path = "/find/{username}", produces = "application/json")
+    public ResponseEntity<Page<User>> findUserByUsername(@PathVariable String username, @RequestParam int page, @RequestParam int size){
+        return userPageableService.getUserByUsername(username, page, size);
+    }
 }
