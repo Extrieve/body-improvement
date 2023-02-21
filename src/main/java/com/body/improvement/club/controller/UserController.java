@@ -28,18 +28,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(path = "/home")
+    @GetMapping(path = {"/", "/home"})
     public String home() {
-        return "THIS IS WORKING";
+        return "The API is up and running";
     }
 
     @GetMapping(path = "/user/all", produces = "application/json")
     public ResponseEntity<Collection<User>> fetchAllUsers(){
         Collection<User> users = userService.getAllUsers().getBody();
-        if (users.isEmpty()){
-            logger.info("No users found");
-            return ResponseEntity.ok(DEFAULT_USER_LIST);
-        }
         return ResponseEntity.ok(users);
     }
 
@@ -90,5 +86,7 @@ public class UserController {
     public ResponseEntity<Object> deleteUser(@PathVariable String username){
         return userService.deleteUser(username);
     }
+
+    // TODO: Implement the delete mapping for workouts and exercises
 
 }
