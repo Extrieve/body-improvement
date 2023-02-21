@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://127.0.0.1:5173/", allowedHeaders = "*")
 public class UserPageableController {
 
-    private static final User DEFAULT_USER = new User();
-
     private final UserPageableService userPageableService;
 
     public UserPageableController(UserPageableService userPageableService) {
@@ -27,5 +25,10 @@ public class UserPageableController {
     @GetMapping(path = "/find/{username}", produces = "application/json")
     public ResponseEntity<Page<User>> findUserByUsername(@PathVariable String username, @RequestParam int page, @RequestParam int size){
         return userPageableService.getUserByUsername(username, page, size);
+    }
+
+    @GetMapping(path = "/find/{firstName}", produces = "application/json")
+    public ResponseEntity<Page<User>> findUserByFirstName(@PathVariable String firstName, @RequestParam int page, @RequestParam int size){
+        return userPageableService.getUsersByFirstNameContaining(firstName, page, size);
     }
 }

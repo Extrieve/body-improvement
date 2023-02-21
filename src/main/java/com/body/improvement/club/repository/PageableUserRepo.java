@@ -9,4 +9,6 @@ public interface PageableUserRepo extends PagingAndSortingRepository<User, Strin
 
     Page<User> findByUsernameContaining(String username, Pageable pageable);
 
+    Page<User> findByFirstNameContaining(String firstName, Pageable pageable);
+
 }
