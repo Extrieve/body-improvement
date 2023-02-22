@@ -2,25 +2,16 @@ package com.body.improvement.club.controller;
 
 import com.body.improvement.club.entity.Exercise;
 import com.body.improvement.club.entity.User;
-import com.body.improvement.club.service.AttachmentService;
 import com.body.improvement.club.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 @RestController
 @CrossOrigin(origins = "http://127.0.0.1:5173/", allowedHeaders = "*")
 public class UserController {
-
-    Logger logger = Logger.getLogger(UserController.class.getName());
-
-    private static final User DEFAULT_USER = new User();
-    private static final List<User> DEFAULT_USER_LIST = null;
 
     private final UserService userService;
 
