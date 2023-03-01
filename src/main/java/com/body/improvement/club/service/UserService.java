@@ -4,6 +4,7 @@ import com.body.improvement.club.entity.Exercise;
 import com.body.improvement.club.entity.User;
 import com.body.improvement.club.entity.Workout;
 import com.body.improvement.club.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +17,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements ServiceDelegator{
 
     private final UserRepository userRepository;
-
     private final Logger logger = LogManager.getLogger(UserService.class);
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public ResponseEntity<User> getUserByUsername(String username){
         logger.info("Fetching user by username: " + username);

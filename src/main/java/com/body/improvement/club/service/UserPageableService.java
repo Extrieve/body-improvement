@@ -2,6 +2,7 @@ package com.body.improvement.club.service;
 
 import com.body.improvement.club.entity.User;
 import com.body.improvement.club.repository.PageableUserRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -10,15 +11,11 @@ import org.springframework.stereotype.Service;
 import java.util.logging.Logger;
 
 @Service
+@RequiredArgsConstructor
 public class UserPageableService {
 
     private final PageableUserRepo pageableUserRepo;
-
     private final Logger logger = Logger.getLogger(UserPageableService.class.getName());
-
-    public UserPageableService(PageableUserRepo pageableUserRepo) {
-        this.pageableUserRepo = pageableUserRepo;
-    }
 
     public ResponseEntity<Page<User>> getAllUsers(int page, int size){
         logger.info("Fetching all users");

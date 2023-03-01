@@ -4,6 +4,7 @@ import com.body.improvement.club.entity.Exercise;
 import com.body.improvement.club.entity.User;
 import com.body.improvement.club.service.AttachmentService;
 import com.body.improvement.club.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
+@RequiredArgsConstructor
 @CrossOrigin(origins = "http://127.0.0.1:5173/", allowedHeaders = "*")
 public class UserController {
 
@@ -23,10 +25,6 @@ public class UserController {
     private static final List<User> DEFAULT_USER_LIST = null;
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @GetMapping(path = {"/", "/home"})
     public String home() {
