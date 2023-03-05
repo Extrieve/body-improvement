@@ -3,6 +3,7 @@ package com.body.improvement.club.service;
 import com.body.improvement.club.entity.Exercise;
 import com.body.improvement.club.entity.User;
 import com.body.improvement.club.entity.Workout;
+import com.body.improvement.club.error.UserNotFoundError;
 import com.body.improvement.club.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springfox.documentation.spring.web.json.Json;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,12 +32,14 @@ public class UserService implements ServiceDelegator{
             User user = userRepository.findUserByUsername(username);
             if (user == null){
                 logger.warn("No user with username: " + username);
-                return ResponseEntity.ok().body(new User());
+                throw new UserNotFoundError(username);
             }
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok().body(user);
         } catch (Exception e) {
-            logger.error("An error occurred when trying to find username: " + username);
+
+            logger.error("An error occurred while fetching user by username: " + username);
             return ResponseEntity.notFound().build();
+
         }
     }
 
