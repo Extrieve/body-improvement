@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Map;
 
 @RestController
 public class WorkoutController {
@@ -34,7 +35,7 @@ public class WorkoutController {
     }
 
     @GetMapping(path = "/workout/find/name/{workoutName}")
-    public ResponseEntity<Workout> fetchWorkoutByName(@PathVariable String workoutName){
+    public ResponseEntity<Map> fetchWorkoutByName(@PathVariable String workoutName){
         return workoutService.getWorkoutByName(workoutName);
     }
 

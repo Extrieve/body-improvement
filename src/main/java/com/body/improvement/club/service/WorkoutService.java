@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class WorkoutService {
@@ -45,20 +47,22 @@ public class WorkoutService {
         }
         catch (RuntimeException e) {
             logger.warn("No workout with id: " + workoutId);
-            return ResponseEntity.badRequest().body(NULL_WORKOUT);
+            return ResponseEntity.notFound().build();
         }
     }
 
-    public ResponseEntity<Workout> getWorkoutByName(String workoutName){
+    public ResponseEntity<Map> getWorkoutByName(String workoutName){
 
         logger.info("Fetching workout with workout name: " + workoutName);
         try {
             Workout payload = workoutRepository.findByName(workoutName).stream().findFirst().get();
-            return ResponseEntity.ok().body(payload);
+            return ResponseEntity.ok().body(payload.toMap());
         }
         catch (RuntimeException e) {
             logger.warn("No workout with name: " + workoutName);
-            return ResponseEntity.badRequest().body(NULL_WORKOUT);
+            Map<String, String> payload = new HashMap<>();
+            payload.put("error", "No workout with name: " + workoutName);
+            return ResponseEntity.ok().body(payload);
         }
     }
 }

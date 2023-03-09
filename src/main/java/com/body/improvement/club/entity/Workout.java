@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 @Entity
 @AllArgsConstructor
@@ -56,5 +57,17 @@ public class Workout {
     @Override
     public int hashCode(){
         return getClass().hashCode();
+    }
+
+    public Map<String, Object> toMap() {
+        return Map.of(
+                "workoutId", workoutId,
+                "name", name,
+                "description", description,
+                "rating", rating,
+                "zonedDateTime", zonedDateTime,
+                "exercises", exercises,
+                "user", user
+        );
     }
 }
