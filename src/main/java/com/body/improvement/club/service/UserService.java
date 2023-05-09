@@ -8,7 +8,11 @@ import com.body.improvement.club.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +22,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.body.improvement.club.utility.GeneralUtility.getNullPropertyNames;
+
 @Service
 @RequiredArgsConstructor
+@DynamicUpdate
+@DynamicInsert
 public class UserService implements ServiceDelegator{
 
     private final UserRepository userRepository;
@@ -143,41 +151,21 @@ public class UserService implements ServiceDelegator{
     @Transactional
     public ResponseEntity<Object> updateUser(User updatedUser){
         logger.info("Updating user: " + updatedUser.getUsername());
-        User existingUser = userRepository.findUserByUsername(updatedUser.getUsername());
+        User userToUpdate = userRepository.findUserByUsername(updatedUser.getUsername());
 
-        if(existingUser == null){
-            logger.error("User not found, creating new user");
-            return saveUser(updatedUser);
-        }
-
-        if (updatedUser.getFirstName() != null) {
-            existingUser.setFirstName(updatedUser.getFirstName());
-        }
-        if (updatedUser.getLastName() != null) {
-            existingUser.setLastName(updatedUser.getLastName());
-        }
-        if (updatedUser.getEmail() != null) {
-            existingUser.setEmail(updatedUser.getEmail());
-        }
-        if (updatedUser.getPassword() != null) {
-            existingUser.setPassword(updatedUser.getPassword());
-        }
-        if (updatedUser.getHeight() != null) {
-            existingUser.setHeight(updatedUser.getHeight());
-        }
-        if (updatedUser.getBodyWeight() != null) {
-            existingUser.setBodyWeight(updatedUser.getBodyWeight());
-        }
-        if (updatedUser.getWorkouts().size() != 0){
-            Collection<Workout> userWorkouts = existingUser.getWorkouts();
-            updatedUser.getWorkouts().forEach(workout -> workout.setUser(existingUser));
-            userWorkouts.addAll(updatedUser.getWorkouts());
-
-            existingUser.setWorkouts(userWorkouts);
+        if(userToUpdate == null){
+            logger.error("User not found");
+            return new ResponseEntity<>(userRepository.save(updatedUser), HttpStatus.CREATED);
         }
 
-        return ResponseEntity.ok().body(userRepository.save(existingUser));
-
+        try {
+            BeanUtils.copyProperties(updatedUser, userToUpdate, getNullPropertyNames(updatedUser));
+            userRepository.save(userToUpdate);
+            return new ResponseEntity<>(userToUpdate, HttpStatus.CREATED);
+        } catch (Exception e) {
+            logger.error("Error updating user: " + updatedUser.getUsername());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @Transactional
