@@ -4,7 +4,7 @@ import com.body.improvement.club.entity.Exercise;
 import com.body.improvement.club.entity.User;
 import com.body.improvement.club.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,9 +67,9 @@ public class UserController {
         return userService.saveExercise(exercise, username);
     }
 
-    @PutMapping(path = "/user/update/", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Object> updateUser(@RequestBody User user){
-        return userService.updateUser(user);
+    @PutMapping(path = "/user/update/{username}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/json")
+    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable String username){
+        return userService.updateUser(user, username);
     }
 
     @DeleteMapping(path = "/user/delete/{username}")
