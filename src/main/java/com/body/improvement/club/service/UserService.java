@@ -5,13 +5,13 @@ import com.body.improvement.club.entity.User;
 import com.body.improvement.club.entity.Workout;
 import com.body.improvement.club.error.UserNotFoundError;
 import com.body.improvement.club.repository.UserRepository;
+import com.body.improvement.club.utility.GeneralUtility;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.body.improvement.club.utility.GeneralUtility.getNullPropertyNames;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +28,7 @@ import static com.body.improvement.club.utility.GeneralUtility.getNullPropertyNa
 public class UserService implements ServiceDelegator{
 
     private final UserRepository userRepository;
+    private final GeneralUtility generalUtility;
     private final Logger logger = LogManager.getLogger(UserService.class);
 
     public ResponseEntity<User> getUserByUsername(String username){
@@ -147,23 +147,20 @@ public class UserService implements ServiceDelegator{
     }
 
     @Transactional
-    public ResponseEntity<Object> updateUser(User updatedUser){
-        logger.info("Updating user: " + updatedUser.getUsername());
-        User userToUpdate = userRepository.findUserByUsername(updatedUser.getUsername());
-
-        if(userToUpdate == null){
-            logger.error("User not found");
-            return new ResponseEntity<>(userRepository.save(updatedUser), HttpStatus.CREATED);
+    public ResponseEntity<User> updateUser(User updatedUser, String username) {
+        User user = userRepository.findById(username).orElse(null);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
         }
+        updatedUser.getWorkouts().forEach(workout -> workout.setUser(user));
+        user.updateWorkouts(updatedUser.getWorkouts());
 
-        try {
-            BeanUtils.copyProperties(updatedUser, userToUpdate, getNullPropertyNames(updatedUser));
-            userRepository.save(userToUpdate);
-            return new ResponseEntity<>(userToUpdate, HttpStatus.CREATED);
-        } catch (Exception e) {
-            logger.error("Error updating user: " + updatedUser.getUsername());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        updatedUser.getExercises().forEach(exercise -> exercise.setUser(user));
+        user.updateExercises(updatedUser.getExercises());
+
+        BeanUtils.copyProperties(updatedUser, user, generalUtility.getNullPropertyNames(updatedUser));
+        User savedUser = userRepository.save(user);
+        return ResponseEntity.ok(savedUser);
     }
 
     @Transactional
