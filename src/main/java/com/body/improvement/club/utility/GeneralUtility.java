@@ -18,7 +18,7 @@ public class GeneralUtility {
         for (java.beans.PropertyDescriptor pd : pds) {
             Object srcValue = src.getPropertyValue(pd.getName());
             // if null or not primitive or not string
-            if (srcValue == null || !pd.getPropertyType().isPrimitive()) {
+            if (srcValue == null || (!pd.getPropertyType().isPrimitive() && !pd.getPropertyType().equals(String.class))) {
                 emptyNames.add(pd.getName());
             }
         }
