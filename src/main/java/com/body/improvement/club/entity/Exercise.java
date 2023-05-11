@@ -56,4 +56,12 @@ public class Exercise {
         return getClass().hashCode();
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj) return true;
+        if(obj == null || getClass() != obj.getClass()) return false;
+        Exercise exercise = (Exercise) obj;
+        return exerciseId != null && exerciseId.equals(exercise.getExerciseId());
+    }
+
 }

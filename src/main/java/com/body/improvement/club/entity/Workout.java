@@ -59,6 +59,14 @@ public class Workout {
         return getClass().hashCode();
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj) return true;
+        if(obj == null || getClass() != obj.getClass()) return false;
+        Workout workout = (Workout) obj;
+        return workoutId != null && workoutId.equals(workout.getWorkoutId());
+    }
+
     public Map<String, Object> toMap() {
         return Map.of(
                 "workoutId", workoutId,
