@@ -80,5 +80,26 @@ public class UserPageableService {
         }
     }
 
+    public ResponseEntity<Page<User>> getUsersByLastNameContaining(String lastName, int page, int size){
+        logger.info("Fetching users by last name: " + lastName);
+
+        try{
+            PageRequest pageRequest = PageRequest.of(page, size);
+            Page<User> users = pageableUserRepo.findByLastNameContaining(lastName, pageRequest);
+
+            if (users.isEmpty()){
+                logger.warning("No users found with last name: " + lastName);
+                return ResponseEntity.ok().body(users);
+            }
+
+            // 206 is a partial content response
+            return ResponseEntity.status(206).body(users);
+
+        } catch (Exception e) {
+            logger.warning("Error fetching users by last name: " + lastName);
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 
 }
