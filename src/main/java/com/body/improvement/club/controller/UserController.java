@@ -40,7 +40,7 @@ public class UserController {
         return userService.getUserByUsernameContaining(username);
     }
 
-    @GetMapping(path = "/user/find/name", consumes = "application/json", produces = "application/json")
+    @GetMapping(path = "/user/find/name", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<User>> fetchUsersByFirstNameAndLastName(
             @RequestBody Map<String, String> userInfo){
 
@@ -50,24 +50,24 @@ public class UserController {
         return userService.getUsersByFirstNameAndLastName(firstName, lastName);
     }
 
-    @GetMapping(path = "/user/find/name/{firstName}", produces = "application/json")
+    @GetMapping(path = "/user/find/name/{firstName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<User>> fetchUsersByFirstNameLike(
             @PathVariable String firstName
     ){
         return userService.getUsersByFirstNameContaining(firstName);
     }
 
-    @PostMapping(path = "/user/save", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/user/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> saveUser(@RequestBody User user){
         return userService.saveUser(user);
     }
 
-    @PostMapping(path = "/exercise/save/{username}", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/exercise/save/{username}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Exercise> saveExercise(@RequestBody Exercise exercise, @PathVariable String username){
         return userService.saveExercise(exercise, username);
     }
 
-    @PutMapping(path = "/user/update/{username}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/json")
+    @PutMapping(path = "/user/update/{username}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable String username){
         return userService.updateUser(user, username);
     }
