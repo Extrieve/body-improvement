@@ -128,7 +128,7 @@ public class UserService implements ServiceDelegator{
 
             // Establish relationship between user and workout
             if(!payload.getWorkouts().isEmpty()){
-            payload.getWorkouts().forEach(workout -> workout.setUser(payload));
+                payload.getWorkouts().forEach(workout -> workout.setUser(payload));
             }
 
             if (!payload.getExercises().isEmpty()) {
@@ -143,7 +143,33 @@ public class UserService implements ServiceDelegator{
             return ResponseEntity.badRequest().build();
 
         }
+    }
 
+    @Transactional
+    public ResponseEntity<Object> batchSaveUsers(Collection<User> users){
+        logger.info("Saving users");
+        try {
+            Collection<User> payload = userRepository.saveAll(users);
+
+            // Establish relationship between user and workout
+            payload.forEach(user -> {
+                if(!user.getWorkouts().isEmpty()){
+                    user.getWorkouts().forEach(workout -> workout.setUser(user));
+                }
+
+                if (!user.getExercises().isEmpty()) {
+                    user.getExercises().forEach(exercise -> exercise.setUser(user));
+                }
+            });
+
+            return ResponseEntity.status(201).body(payload);
+
+        } catch (Exception e) {
+
+            logger.error("Error saving users");
+            return ResponseEntity.badRequest().build();
+
+        }
     }
 
     @Transactional
