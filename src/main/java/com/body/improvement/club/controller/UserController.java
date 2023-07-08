@@ -62,6 +62,11 @@ public class UserController {
         return userService.saveUser(user);
     }
 
+    @PostMapping(path = "/user/saveBatch", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> saveUsers(@RequestBody Collection<User> users){
+        return userService.batchSaveUsers(users);
+    }
+
     @PostMapping(path = "/exercise/save/{username}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Exercise> saveExercise(@RequestBody Exercise exercise, @PathVariable String username){
         return userService.saveExercise(exercise, username);
